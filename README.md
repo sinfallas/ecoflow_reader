@@ -29,14 +29,16 @@ Este script de Python permite interactuar con la API pública de EcoFlow para ob
 
 ## Configuración
 
-El script requiere que las credenciales de EcoFlow se pasen como variables de entorno. La forma más sencilla de gestionarlo es creando un archivo `.env`.
+Para utilizar este script, **primero debes registrarte en el portal de desarrolladores de la API de EcoFlow** para obtener tus credenciales de acceso (Access Key y Secret Key). También necesitarás tener a la mano el número de serie (SN) de tu equipo.
+
+El script requiere que estas credenciales se pasen como variables de entorno. La forma más sencilla de gestionarlo es creando un archivo `.env`.
 
 1. En el directorio raíz donde se encuentra tu script, crea un archivo llamado `.env`.
 2. Añade tus credenciales siguiendo este formato:
 
    ```ini
-   ECOFLOW_API_KEY="tu_access_key_aqui"
-   ECOFLOW_API_SECRET="tu_secret_key_aqui"
+   ECOFLOW_API_KEY="tu_access_key_obtenida_en_ecoflow"
+   ECOFLOW_API_SECRET="tu_secret_key_obtenida_en_ecoflow"
    ECOFLOW_DEVICE_SN="el_numero_de_serie_de_tu_equipo"
    ```
 
