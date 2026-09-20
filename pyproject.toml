@@ -29,3 +29,8 @@ ecoflow-cli = "ecoflow_reader.cli:main"
 dev = [
     "pytest>=7.0",
 ]
+
+[tool.pytest.ini_options]
+markers = [
+    "integration: marca pruebas que hacen peticiones reales a la API de EcoFlow"
+]
