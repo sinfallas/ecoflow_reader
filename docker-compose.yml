@@ -6,6 +6,7 @@ services:
     pull_policy: always
     environment:
       TZ: 'America/Caracas'
+      UV_PYTHON_DOWNLOADS: true
     volumes:
       - .:/ecoflow_reader
     working_dir: /ecoflow_reader
@@ -18,7 +19,6 @@ services:
     pull_policy: always
     environment:
       TZ: 'America/Caracas'
-      # El ":-" evita el warning silenciosamente si la variable no existe
       UV_PUBLISH_TOKEN: ${UV_PUBLISH_TOKEN:-}
     volumes:
       - .:/ecoflow_reader

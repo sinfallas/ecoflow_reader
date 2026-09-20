@@ -3,30 +3,28 @@ import hmac
 import random
 import time
 import logging
+from typing import Any, cast
 import requests
 
-from .models import DeviceQuota # Se mantiene la importación directa, es segura aquí
+from .models import DeviceQuota
 
 log = logging.getLogger(__name__)
 
 class EcoFlowClient:
-    def __init__(self, api_key: str, api_secret: str, base_url: str = 'https://api.ecoflow.com'):
+    def __init__(self, api_key: str, api_secret: str, base_url: str = 'https://api.ecoflow.com') -> None:
         self.api_key = api_key
         self.api_secret = api_secret
         self.base_url = base_url
 
     def _hmac_sha256(self, data: str) -> str:
-        """Genera el hash HMAC-SHA256 en formato hexadecimal de forma nativa."""
         return hmac.new(self.api_secret.encode('utf-8'), data.encode('utf-8'), hashlib.sha256).hexdigest()
 
-    def _get_qstring(self, params: dict) -> str:
-        """Construye el string de parámetros ordenados alfabéticamente."""
+    def _get_qstring(self, params: dict[str, Any] | None) -> str:
         if not params:
             return ""
         return '&'.join([f"{key}={params[key]}" for key in sorted(params.keys())])
 
-    def request(self, path: str, params: dict = None) -> dict | None:
-        """Realiza la petición GET firmada a la API de EcoFlow."""
+    def request(self, path: str, params: dict[str, Any] | None = None) -> dict[str, Any] | None:
         nonce = str(random.randint(100000, 999999))
         timestamp = str(int(time.time() * 1000))
         
@@ -40,32 +38,23 @@ class EcoFlowClient:
         headers['sign'] = self._hmac_sha256(sign_str)
         
         try:
-            # Añadido un timeout explícito que ya tenías (¡excelente práctica!)
             response = requests.get(f"{self.base_url}{path}", headers=headers, params=params, timeout=10)
             response.raise_for_status()
-            return response.json()
+            # Mypy requiere que confirmemos explícitamente que JSON devuelve un diccionario
+            return cast(dict[str, Any], response.json())
         except requests.exceptions.RequestException as e:
             log.error(f"Error en la petición a la API: {e}")
             if hasattr(e, 'response') and e.response is not None:
                 log.error(f"Detalle del servidor: {e.response.text}")
             return None
 
-    # Sintaxis nativa de Python 3.10+ (A adiós al Union)
-    def get_device_quota(self, sn: str, as_model: bool = True) -> DeviceQuota | dict | None:
-        """
-        Obtiene la cuota y estado de un dispositivo específico.
-        
-        Args:
-            sn: Número de serie del dispositivo.
-            as_model: Si es True, devuelve un objeto Pydantic (DeviceQuota). 
-                      Si es False, devuelve el diccionario JSON crudo completo.
-        """
+    def get_device_quota(self, sn: str, as_model: bool = True) -> DeviceQuota | dict[str, Any] | None:
         response = self.request('/iot-open/sign/device/quota/all', {'sn': sn})
         
         if not response or response.get("code") != "0":
             return None
             
-        data = response.get("data", {})
+        data = cast(dict[str, Any], response.get("data", {}))
         
         if as_model:
             try:

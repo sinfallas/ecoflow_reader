@@ -1,26 +1,30 @@
 import os
 import logging
+import sys
 from dotenv import load_dotenv
 from ecoflow_reader.client import EcoFlowClient
+from ecoflow_reader.models import DeviceQuota
 
 logging.basicConfig(level=logging.ERROR, format='%(levelname)s: %(message)s')
 log = logging.getLogger(__name__)
 
-def main():
+def main() -> None:
     load_dotenv()
     
     key = os.getenv('ECOFLOW_API_KEY')
     secret = os.getenv('ECOFLOW_API_SECRET')
     sn = os.getenv('ECOFLOW_DEVICE_SN')
     
-    if not all([key, secret, sn]):
+    # Explicitud absoluta para Mypy (en lugar del all())
+    if key is None or secret is None or sn is None:
         log.error("Faltan credenciales. Verifica que el archivo .env contiene ECOFLOW_API_KEY, ECOFLOW_API_SECRET y ECOFLOW_DEVICE_SN.")
-        exit(1)
+        sys.exit(1)
     
     client = EcoFlowClient(api_key=key, api_secret=secret)
     quota = client.get_device_quota(sn=sn)
     
-    if quota:
+    # Mypy ahora sabe con certeza que "quota" es un objeto Pydantic
+    if isinstance(quota, DeviceQuota):
         print("=== ESTADO DEL EQUIPO ECOFLOW ===")
         print(f"Batería: {quota.battery.level}% (Salud: {quota.battery.health}%)")
         print(f"Capacidad: {quota.battery.remain_cap_mah} / {quota.battery.full_cap_mah} mAh")
@@ -29,7 +33,6 @@ def main():
         print("\n--- ENTRADA DE ENERGÍA ---")
         print(f"Total Entrando: {quota.power_in.total_watts} W")
         
-        # Matemáticas simples: 130020 mV son ~130.0 V
         if quota.power_in.ac_in_voltage > 0:
             volts_in = quota.power_in.ac_in_voltage / 1000
             print(f"  - AC Pared: {quota.power_in.ac_watts} W ({volts_in:.1f}V @ {quota.power_in.ac_in_freq}Hz)")

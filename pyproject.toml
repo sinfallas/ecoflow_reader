@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "ecoflow-reader"
-version = "0.1.4"
+version = "0.1.5"
 description = "Librería en Python para interactuar con la API pública de EcoFlow."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -28,9 +28,19 @@ ecoflow-cli = "ecoflow_reader.cli:main"
 [project.optional-dependencies]
 dev = [
     "pytest>=7.0",
+    "pytest-cov",
+    "mypy",
+    "tox",
+    "tox-uv"
 ]
 
 [tool.pytest.ini_options]
+addopts = "--cov=ecoflow_reader --cov-report=term-missing"
 markers = [
     "integration: marca pruebas que hacen peticiones reales a la API de EcoFlow"
 ]
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+ignore_missing_imports = true

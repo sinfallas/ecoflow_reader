@@ -1,3 +1,4 @@
+from typing import Any
 from pydantic import BaseModel, Field, ConfigDict
 
 class EcoFlowBaseModel(BaseModel):
@@ -53,10 +54,10 @@ class DeviceQuota(EcoFlowBaseModel):
     battery: BatteryStatus
     power_in: PowerIn
     power_out: PowerOut
-    raw_data: dict = Field(default_factory=dict, exclude=True, description="El JSON original completo")
+    raw_data: dict[str, Any] = Field(default_factory=dict, exclude=True, description="El JSON original completo")
 
     @classmethod
-    def from_ecoflow_json(cls, data_dict: dict) -> 'DeviceQuota':
+    def from_ecoflow_json(cls, data_dict: dict[str, Any]) -> 'DeviceQuota':
         """Construye el modelo a partir del diccionario 'data' del JSON de EcoFlow."""
         return cls(
             battery=BatteryStatus(**data_dict),
