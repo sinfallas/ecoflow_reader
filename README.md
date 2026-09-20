@@ -1,12 +1,12 @@
 # EcoFlow Reader
 
-Librería en Python para interactuar con la API pública de EcoFlow. Permite obtener información sobre las cuotas y el estado de los equipos vinculados a tu cuenta, implementando de forma nativa el flujo de autenticación seguro requerido por la plataforma mediante firmas criptográficas (HMAC-SHA256) 
+Librería en Python para interactuar con la API pública de EcoFlow. Permite obtener información sobre las cuotas y el estado de los equipos vinculados a tu cuenta, implementando de forma nativa el flujo de autenticación seguro requerido por la plataforma mediante firmas criptográficas (HMAC-SHA256). 
 
-A partir de la versión `0.1.3`, las respuestas están tipadas y estructuradas utilizando **Pydantic**, ofreciendo autocompletado en tu editor de código y validación automática de datos.
+A partir de la versión `0.1.3`, las respuestas están tipadas y estructuradas utilizando **Pydantic**, ofreciendo autocompletado en tu editor de código y extrayendo telemetría avanzada (voltajes, frecuencias, estado de interruptores y capacidad real).
 
 ## Instalación
 
-Puedes instalar la librería directamente desde PyPI utilizando `pip` o `uv`
+Puedes instalar la librería directamente desde PyPI utilizando `pip` o `uv`:
 
 ```bash
 uv pip install ecoflow-reader
@@ -42,11 +42,11 @@ Al instalar el paquete, se expone un binario global en tu sistema. Si tienes el 
 ecoflow-cli
 ```
 
-Si la configuración es correcta, recibirás en consola un resumen limpio y formateado con el estado de la batería, la entrada de energía (cargas AC/Solar) y el consumo actual del dispositivo. En caso de error, el sistema de logging te indicará qué credencial o problema de red debes revisar.
+Si la configuración es correcta, recibirás en consola un resumen limpio y formateado mostrando la capacidad real de la batería (mAh), voltajes de la red eléctrica, estado de encendido de los puertos (AC/DC) y el consumo desglosado. En caso de error, el sistema de logging te indicará el problema.
 
 ### 2. Como Librería en tu Código Python
 
-Puedes importar la clase `EcoFlowClient` para integrarla en tus propias aplicaciones, contenedores o APIs. Gracias a Pydantic, navegar por los datos del equipo es sumamente intuitivo:
+Puedes importar la clase `EcoFlowClient` para integrarla en tus propias aplicaciones, contenedores o APIs. Gracias a Pydantic, navegar por la telemetría del equipo es sumamente intuitivo:
 
 ```python
 import os
@@ -66,10 +66,19 @@ client = EcoFlowClient(api_key=API_KEY, api_secret=API_SECRET)
 quota = client.get_device_quota(sn=DEVICE_SN)
 
 if quota:
-    print(f"Nivel de Batería: {quota.battery.level}%")
+    print("=== BATERÍA ===")
+    print(f"Nivel: {quota.battery.level}% ({quota.battery.remain_cap_mah} mAh)")
     print(f"Temperatura: {quota.battery.temp_c}°C")
-    print(f"Salida de energía (Consumo): {quota.power_out.total_watts}W")
-    print(f"Entrada de energía (Carga): {quota.power_in.total_watts}W")
+    
+    print("\n=== ENTRADA (CARGA) ===")
+    print(f"Total: {quota.power_in.total_watts} W")
+    if quota.power_in.ac_in_voltage > 0:
+        print(f"Red Eléctrica: {quota.power_in.ac_in_voltage / 1000} V @ {quota.power_in.ac_in_freq} Hz")
+    
+    print("\n=== SALIDA (CONSUMO) ===")
+    print(f"Total: {quota.power_out.total_watts} W")
+    print(f"Enchufes AC Encendidos: {bool(quota.power_out.ac_enabled)}")
+    print(f"Consumo AC: {quota.power_out.ac_watts} W")
     
     # Si quieres ver todo el objeto Pydantic en formato JSON estructurado:
     # print(quota.model_dump_json(indent=2))
