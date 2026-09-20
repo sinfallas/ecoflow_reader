@@ -1,10 +1,22 @@
-* commit 98f75f4b3815b3b8b828f8d0d74253d954d2ae07 (HEAD -> main, origin/main, origin/HEAD)
+* commit 628c3737adb2b4c1383fb7c475b308bc20a443a4 (HEAD -> main, origin/main, origin/HEAD)
+| Author: Jesus Palencia <sinfallas@gmail.com>
+| Date:   Sat Sep 19 22:44:26 2026 -0400
+| 
+|     * update
+| 
+* commit c9be257cb9c392839cfff25222851a05153d39d6
+| Author: Jesus Palencia <sinfallas@gmail.com>
+| Date:   Sat Sep 19 22:30:18 2026 -0400
+| 
+|     * changelog
+| 
+* commit 98f75f4b3815b3b8b828f8d0d74253d954d2ae07
 | Author: Jesus Palencia <sinfallas@gmail.com>
 | Date:   Sat Sep 19 22:30:16 2026 -0400
 | 
 |     * readme y contributing
 | 
-* commit f8800cbe626bb24ad291d474a80a71575543f724
+* commit f8800cbe626bb24ad291d474a80a71575543f724 (tag: v0.1.0)
 | Author: Jesus Palencia <sinfallas@gmail.com>
 | Date:   Sat Sep 19 22:15:40 2026 -0400
 | 
