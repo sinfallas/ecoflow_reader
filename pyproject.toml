@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "ecoflow-reader"
-version = "0.1.0"
+version = "0.1.1"
 description = "Librería en Python para interactuar con la API pública de EcoFlow."
 readme = "README.md"
 requires-python = ">=3.7"
