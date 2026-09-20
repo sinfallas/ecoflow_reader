@@ -1,0 +1,14 @@
+services:
+  build:
+    image: sinfallas/base-python-uv:3.13
+    container_name: build
+    hostname: build
+    environment:
+      TZ: 'America/Caracas'
+      UV_PUBLISH_TOKEN: ${UV_PUBLISH_TOKEN}
+    volumes:
+      - ./ecoflow_reader:/ecoflow_reader
+    working_dir: /ecoflow_reader
+    command: bash -c "uv build && uv publish"
+
+

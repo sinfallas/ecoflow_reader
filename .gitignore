@@ -60,3 +60,6 @@ MANIFEST
 *.swo
 .DS_Store
 Thumbs.db
+
+*.whl
+*.tar.gz
