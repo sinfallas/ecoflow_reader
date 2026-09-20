@@ -1,4 +1,16 @@
 services:
+  test:
+    image: sinfallas/base-python-uv:3.13
+    container_name: test
+    hostname: test
+    pull_policy: always
+    environment:
+      TZ: 'America/Caracas'
+    volumes:
+      - .:/ecoflow_reader
+    working_dir: /ecoflow_reader
+    command: bash -c "uv pip install --system -e '.[dev]' && pytest -v"
+
   build:
     image: sinfallas/base-python-uv:3.13
     container_name: build
@@ -6,10 +18,9 @@ services:
     pull_policy: always
     environment:
       TZ: 'America/Caracas'
-      UV_PUBLISH_TOKEN: ${UV_PUBLISH_TOKEN}
+      # El ":-" evita el warning silenciosamente si la variable no existe
+      UV_PUBLISH_TOKEN: ${UV_PUBLISH_TOKEN:-}
     volumes:
       - .:/ecoflow_reader
     working_dir: /ecoflow_reader
     command: bash -c "rm -rf dist/ && uv build && uv publish"
-
-

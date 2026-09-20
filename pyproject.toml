@@ -4,17 +4,18 @@ build-backend = "hatchling.build"
 
 [project]
 name = "ecoflow-reader"
-version = "0.1.1"
+version = "0.1.3"
 description = "Librería en Python para interactuar con la API pública de EcoFlow."
 readme = "README.md"
-requires-python = ">=3.7"
+requires-python = ">=3.10"
 license = {text = "GPL-2.0"}
 authors = [
     {name = "Jesus Palencia", email = "sinfallas@gmail.com"}
 ]
 dependencies = [
     "requests",
-    "python-dotenv"
+    "python-dotenv",
+    "pydantic>=2.0.0"
 ]
 
 [project.urls]
@@ -23,3 +24,8 @@ Repository = "https://github.com/sinfallas/ecoflow_reader.git"
 
 [project.scripts]
 ecoflow-cli = "ecoflow_reader.cli:main"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+]

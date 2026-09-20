@@ -5,6 +5,8 @@ import time
 import logging
 import requests
 
+from .models import DeviceQuota # Se mantiene la importación directa, es segura aquí
+
 log = logging.getLogger(__name__)
 
 class EcoFlowClient:
@@ -38,6 +40,7 @@ class EcoFlowClient:
         headers['sign'] = self._hmac_sha256(sign_str)
         
         try:
+            # Añadido un timeout explícito que ya tenías (¡excelente práctica!)
             response = requests.get(f"{self.base_url}{path}", headers=headers, params=params, timeout=10)
             response.raise_for_status()
             return response.json()
@@ -47,6 +50,28 @@ class EcoFlowClient:
                 log.error(f"Detalle del servidor: {e.response.text}")
             return None
 
-    def get_device_quota(self, sn: str) -> dict | None:
-        """Obtiene la cuota y estado de un dispositivo específico."""
-        return self.request('/iot-open/sign/device/quota/all', {'sn': sn})
+    # Sintaxis nativa de Python 3.10+ (A adiós al Union)
+    def get_device_quota(self, sn: str, as_model: bool = True) -> DeviceQuota | dict | None:
+        """
+        Obtiene la cuota y estado de un dispositivo específico.
+        
+        Args:
+            sn: Número de serie del dispositivo.
+            as_model: Si es True, devuelve un objeto Pydantic (DeviceQuota). 
+                      Si es False, devuelve el diccionario JSON crudo completo.
+        """
+        response = self.request('/iot-open/sign/device/quota/all', {'sn': sn})
+        
+        if not response or response.get("code") != "0":
+            return None
+            
+        data = response.get("data", {})
+        
+        if as_model:
+            try:
+                return DeviceQuota.from_ecoflow_json(data)
+            except Exception as e:
+                log.error(f"Error parseando datos con Pydantic: {e}")
+                return None
+        
+        return response
