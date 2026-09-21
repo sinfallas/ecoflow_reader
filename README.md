@@ -2,7 +2,7 @@
 
 Librería en Python para interactuar con la API pública de EcoFlow. Permite obtener información sobre las cuotas y el estado de los equipos vinculados a tu cuenta, implementando de forma nativa el flujo de autenticación seguro requerido por la plataforma mediante firmas criptográficas (HMAC-SHA256). 
 
-A partir de la versión `0.1.5`, la librería ha sido rediseñada con estándares de nivel empresarial:
+A partir de la versión `0.1.6`, la librería ha sido rediseñada con estándares de nivel empresarial:
 - **Modelos Estructurados:** Respuestas tipadas utilizando **Pydantic** para autocompletado de código y extracción de telemetría avanzada (voltajes, frecuencias, estado de interruptores y capacidad real).
 - **Código Impecable:** Formateo automático y linting ultrarrápido garantizado por `ruff`.
 - **Alta Fiabilidad:** Probada exhaustivamente con una cobertura de código superior al 97%.

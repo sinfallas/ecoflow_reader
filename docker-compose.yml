@@ -19,7 +19,7 @@ services:
     pull_policy: always
     environment:
       TZ: 'America/Caracas'
-      UV_PUBLISH_TOKEN: ${UV_PUBLISH_TOKEN:-}
+      UV_PUBLISH_TOKEN: ${UV_PUBLISH_TOKEN}
     volumes:
       - .:/ecoflow_reader
     working_dir: /ecoflow_reader
