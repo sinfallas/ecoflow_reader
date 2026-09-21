@@ -4,6 +4,7 @@ Librería en Python para interactuar con la API pública de EcoFlow. Permite obt
 
 A partir de la versión `0.1.5`, la librería ha sido rediseñada con estándares de nivel empresarial:
 - **Modelos Estructurados:** Respuestas tipadas utilizando **Pydantic** para autocompletado de código y extracción de telemetría avanzada (voltajes, frecuencias, estado de interruptores y capacidad real).
+- **Código Impecable:** Formateo automático y linting ultrarrápido garantizado por `ruff`.
 - **Alta Fiabilidad:** Probada exhaustivamente con una cobertura de código superior al 97%.
 - **Tipado Estricto:** Código 100% validado estáticamente en origen mediante `mypy`.
 - **Compatibilidad Total:** Matriz de pruebas automatizada para entornos con Python 3.10, 3.11, 3.12 y 3.13.
@@ -100,3 +101,4 @@ raw_data = client.get_device_quota(sn=DEVICE_SN, as_model=False)
 ## Licencia y Autor
 
 Desarrollado por Jesús Palencia (sinfallas)
+Distribuido bajo la licencia GPL-2.0. Consulta el archivo `LICENSE` para más detalles.

@@ -1,4 +1,4 @@
 from .client import EcoFlowClient
-from .models import DeviceQuota, BatteryStatus, PowerIn, PowerOut
+from .models import BatteryStatus, DeviceQuota, PowerIn, PowerOut
 
 __all__ = ["EcoFlowClient", "DeviceQuota", "BatteryStatus", "PowerIn", "PowerOut"]
