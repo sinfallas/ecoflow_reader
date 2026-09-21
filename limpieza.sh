@@ -14,6 +14,7 @@ rm -rf .mypy_cache
 rm -rf .pytest_cache
 rm -rf .ruff_cache
 rm -rf .tox
+rm -rf dist
 rm -rf tests/__pycache__
 rm -rf src/ecoflow_reader/__pycache__
 docker system prune -af
