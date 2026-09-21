@@ -14,14 +14,14 @@ Para garantizar un estándar de nivel empresarial, el proyecto implementa múlti
 2. **Pruebas Unitarias y de Integración:** A través de `pytest`. Se evalúa el funcionamiento aislado mediante simulaciones y se verifica la conexión en vivo con EcoFlow.
 3. **Cobertura de Código:** Medida con `pytest-cov`, garantizando que más del 95% del código es ejecutado.
 4. **Análisis Estático de Tipos:** Código validado en modo estricto con `mypy`.
-5. **Matriz de Compatibilidad:** Pruebas orquestadas con `tox` para asegurar el funcionamiento en Python 3.10, 3.11, 3.12 y 3.13.
+5. **Matriz de Compatibilidad:** Pruebas orquestadas con `tox` para asegurar el funcionamiento en Python 3.10, 3.11, 3.12, 3.13 y 3.14.
 
 ### Comandos de Validación
 
 Dependiendo de la fase de desarrollo, utiliza el contenedor `test`:
 
 **A. La Matriz Completa (Ideal antes de un commit o publicación):**
-Audita el estilo con Ruff, ejecuta el análisis de tipos con Mypy y corre las pruebas en las 4 versiones de Python soportadas.
+Audita el estilo con Ruff, ejecuta el análisis de tipos con Mypy y corre las pruebas en las 5 versiones de Python soportadas.
 ```bash
 docker compose run --rm -e UV_PYTHON_DOWNLOADS=true test bash -c "uv pip install --system -e '.[dev]' && tox"
 ```
@@ -52,3 +52,13 @@ docker compose run --rm build
 ```
 
 El contenedor se encargará de limpiar compilaciones previas, generará los nuevos empaquetados `.tar.gz` y `.whl` utilizando `uv`, los subirá a PyPI y se detendrá automáticamente.
+
+## Solución de Problemas (Troubleshooting)
+
+### Archivos de caché rastreados accidentalmente por Git
+Si Git incluyó carpetas de caché temporal (como `.ruff_cache/` o `.pytest_cache/`) antes de que el archivo `.gitignore` fuera configurado, estas seguirán apareciendo en los *commits* futuros. Para obligar a Git a olvidarlas sin eliminarlas de tu disco duro, ejecuta el siguiente comando en tu entorno local:
+
+```bash
+git rm -r --cached .ruff_cache/
+git rm -r --cached .pytest_cache/
+```

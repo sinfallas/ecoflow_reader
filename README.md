@@ -41,7 +41,15 @@ ECOFLOW_DEVICE_SN="el_numero_de_serie_de_tu_equipo"
 
 ### 1. Desde la Terminal (CLI)
 
-Al instalar el paquete, se expone un binario global en tu sistema. Si tienes el archivo `.env` configurado en el directorio actual, simplemente ejecuta:
+#### Opción A: Ejecución mediante Docker (Recomendado para pruebas sin instalación)
+Si clonaste el repositorio y prefieres no instalar dependencias en tu sistema anfitrión, puedes ejecutar la herramienta directamente a través del contenedor de desarrollo aislado. Con tu archivo `.env` configurado en la raíz del proyecto, ejecuta:
+
+```bash
+docker compose run --rm test bash -c "uv pip install --system -e '.[dev]' && ecoflow-cli"
+```
+
+#### Opción B: Ejecución Local
+Si instalaste el paquete en tu sistema usando `pip` o `uv`, se expone un binario global. Asegúrate de estar en el directorio donde se encuentra tu archivo `.env` y simplemente ejecuta:
 
 ```bash
 ecoflow-cli

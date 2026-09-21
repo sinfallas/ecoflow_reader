@@ -76,3 +76,9 @@ Ejecuta las pruebas en la versión actual de Python. **Nota:** Para que las prue
 docker compose run --rm test
 ```
 *(Nota: Para ejecutar exclusivamente las pruebas unitarias y omitir la conexión a internet, puedes usar: `docker compose run --rm test bash -c "uv pip install --system -e '.[dev]' && pytest -m 'not integration'"`).*
+
+### C. Prueba Exclusiva de Conexión (Solo Integración)
+Si modificas tus credenciales en el archivo `.env` y necesitas verificar rápidamente si la autenticación HMAC-SHA256 y la comunicación con EcoFlow funcionan sin ejecutar la suite unitaria, utiliza este comando:
+```bash
+docker compose run --rm test bash -c "uv pip install --system -e '.[dev]' && pytest -m integration -v"
+```

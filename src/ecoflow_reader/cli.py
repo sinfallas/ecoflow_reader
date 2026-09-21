@@ -1,3 +1,5 @@
+import argparse
+import json
 import logging
 import os
 import sys
@@ -12,6 +14,14 @@ log = logging.getLogger(__name__)
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser(description="CLI interactiva para la API de EcoFlow")
+    parser.add_argument(
+        "--raw",
+        action="store_true",
+        help="Devuelve el payload JSON original y sin parsear de EcoFlow (Ideal para debugging)",
+    )
+    args = parser.parse_args()
+
     load_dotenv()
 
     key = os.getenv("ECOFLOW_API_KEY")
@@ -27,6 +37,16 @@ def main() -> None:
         sys.exit(1)
 
     client = EcoFlowClient(api_key=key, api_secret=secret)
+
+    # Modo diagnóstico para extraer variables específicas (ej. mapeo de parámetros de escritura)
+    if args.raw:
+        raw_data = client.get_device_quota(sn=sn, as_model=False)
+        if raw_data:
+            print(json.dumps(raw_data, indent=2))
+        else:
+            log.error("No se pudo obtener el JSON original del equipo.")
+        return
+
     quota = client.get_device_quota(sn=sn)
 
     # Mypy ahora sabe con certeza que "quota" es un objeto Pydantic
