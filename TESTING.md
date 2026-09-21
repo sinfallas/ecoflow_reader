@@ -52,7 +52,7 @@ Python es un lenguaje de tipado dinámico, lo cual es flexible pero propenso a e
 El ecosistema de Python es amplio y fragmentado. Una librería debe funcionar idénticamente en un servidor heredado y en un contenedor de última generación.
 *   **Propósito:** Certificar la compatibilidad universal del paquete evaluándolo simultáneamente contra múltiples intérpretes de Python.
 *   **Herramientas:** `tox` (el orquestador) potenciado por `tox-uv` (el motor de resolución ultrarrápido).
-*   **Implementación:** En lugar de probar la librería únicamente en el entorno local del desarrollador (ej. Python 3.13), Tox está configurado para levantar entornos virtuales completamente aislados para **Python 3.10, 3.11, 3.12 y 3.13**. 
+*   **Implementación:** En lugar de probar la librería únicamente en el entorno local del desarrollador (ej. Python 3.13), Tox está configurado para levantar entornos virtuales completamente aislados para **Python 3.10, 3.11, 3.12, 3.13 y 3.14**. 
     *   Si el sistema anfitrión no posee estas versiones, la variable de entorno `UV_PYTHON_DOWNLOADS=true` le permite a `uv` descargar los intérpretes binarios en milisegundos.
     *   Dentro de cada entorno aislado, Tox instala las dependencias desde cero, ejecuta la verificación de estilo (`ruff`), el análisis de tipos estricto (`mypy`) y corre la suite completa de pruebas unitarias (`pytest`). Si una sintaxis moderna o una función obsoleta rompe la retrocompatibilidad, la matriz fallará, evitando que se publique una versión defectuosa en PyPI.
 

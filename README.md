@@ -7,7 +7,7 @@ A partir de la versión `0.1.5`, la librería ha sido rediseñada con estándare
 - **Código Impecable:** Formateo automático y linting ultrarrápido garantizado por `ruff`.
 - **Alta Fiabilidad:** Probada exhaustivamente con una cobertura de código superior al 97%.
 - **Tipado Estricto:** Código 100% validado estáticamente en origen mediante `mypy`.
-- **Compatibilidad Total:** Matriz de pruebas automatizada para entornos con Python 3.10, 3.11, 3.12 y 3.13.
+- **Compatibilidad Total:** Matriz de pruebas automatizada para entornos con Python 3.10, 3.11, 3.12, 3.13 y 3.14.
 
 ## Instalación
 
